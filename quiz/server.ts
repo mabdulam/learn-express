@@ -40,6 +40,7 @@ const addMsgToRequest = (req: UserRequest, res: Response, next: NextFunction) =>
 };
 
 app.use(cors({ origin: 'http://localhost:3000' }));
+
 app.use('/read/usernames', addMsgToRequest);
 
 app.get('/read/usernames', (req: UserRequest, res: Response) => {
@@ -49,8 +50,20 @@ app.get('/read/usernames', (req: UserRequest, res: Response) => {
   res.send(usernames);
 });
 
+app.get('/read/username/:name', addMsgToRequest, (req: UserRequest, res: Response) => {
+  const username = req.params.name;
+  const user = req.users?.find(u => u.username === username);
+
+  if (user) {
+    res.json({ email: user.email });
+  } else {
+    res.status(404).json({ error: { message: 'User not found', status: 404 } });
+  }
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use('/write/adduser', addMsgToRequest);
 
 app.post('/write/adduser', (req: UserRequest, res: Response) => {
