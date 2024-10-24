@@ -1,19 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import express, { Express, Request, Response, NextFunction } from 'express';
+import express, { Express, Response, NextFunction } from 'express';
 import cors from 'cors';
-
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-}
-
-interface UserRequest extends Request {
-  users?: User[];
-}
+import { User, UserRequest } from './types';
 
 const app: Express = express();
 const port: number = 8000;
